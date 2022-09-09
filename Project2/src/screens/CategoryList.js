@@ -31,7 +31,7 @@ const [search, setsearch] = useState('');
                 <TouchableOpacity
                   style={styles.imgback}
                   onPress={() =>
-                    props.navigation.navigate('ProductList', {item: item})
+                    props.navigation.navigate('ProductList',{item: item.title})
                   }>
                   <Image style={styles.img} source={item.img} />
                 </TouchableOpacity>

@@ -1,8 +1,16 @@
 import {useRoute} from '@react-navigation/native';
-import React,{useState}from 'react';
-import {SafeAreaView, StyleSheet, View, Text, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import CustomInput from '../components/CustomInput';
-
+import {Data1,Data2} from '../mock/Mock';
 
 const ProductList = props => {
   const {params} = useRoute();
@@ -10,16 +18,49 @@ const ProductList = props => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputbox}>
-      <CustomInput 
-       onChangeText={(text) =>setsearch(text)}
-       value={search}
-      />
+        <CustomInput onChangeText={text => setsearch(text)} value={search} />
       </View>
-      <View style={styles.main}>
-        <Image style={styles.profile1} source={params.item.img} />
-        <Text style={styles.title}>{params.item.title}</Text>
-        <Text style={styles.mail}>{params.item.mail}</Text>
+      
+      {
+        params.item == 'Fruits' ?
+      <View>
+        <FlatList
+          data={Data1}
+          renderItem={({item}) => (
+            <View>
+              
+             <TouchableOpacity  style={styles.row} onPress={() =>
+                    props.navigation.navigate('DetailScreen',{item:item})
+                  }> 
+                  
+                <Image style={styles.img} source={item.img} />
+                <Text style={styles.title}>{item.title}</Text>
+                
+                </TouchableOpacity>
+             <View style={styles.line} />
+            </View>
+          )}
+        />
       </View>
+      :
+      <View>
+        <FlatList
+          data={Data2}
+          renderItem={({item}) => (
+            <View>
+              <TouchableOpacity  style={styles.row} onPress={() =>
+                    props.navigation.navigate('DetailScreen',{item:item})
+                  }>
+                   <Image style={styles.img} source={item.img} /> 
+                   <Text style={styles.title}>{item.title}</Text>
+                </TouchableOpacity>
+             <View style={styles.line} />
+            </View>
+          )}
+        />
+      </View>
+}
+      
     </SafeAreaView>
   );
 };
@@ -27,6 +68,11 @@ const ProductList = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 10,
   },
   img: {
     resizeMode: 'contain',
@@ -61,9 +107,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 22,
     fontWeight: '600',
-
-    textAlign: 'center',
-    marginTop: 10,
+    marginLeft: 15,
   },
   mail: {
     color: 'black',
@@ -72,9 +116,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
-  inputbox:{
-    marginHorizontal:10,
-    marginTop:10
+  inputbox: {
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+  line: {
+    borderWidth: 0.5,
+    borderBottomColor: 'gray',
+    marginVertical: 8,
+    marginHorizontal: 10,
   },
 });
 
