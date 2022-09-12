@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import {Data1,Data2} from '../mock/Mock';
+import { colors } from '../utils/Variables';
 
 const ProductList = props => {
   const {params} = useRoute();
@@ -25,7 +26,9 @@ const ProductList = props => {
         params.item == 'Fruits' ?
       <View>
         <FlatList
-          data={Data1}
+          data={Data1.filter(value=>{
+            return  value.title.toLowerCase().includes(search.toLowerCase())
+           })}
           renderItem={({item}) => (
             <View>
               
@@ -45,7 +48,9 @@ const ProductList = props => {
       :
       <View>
         <FlatList
-          data={Data2}
+           data={Data2.filter(value=>{
+            return  value.title.toLowerCase().includes(search.toLowerCase())
+           })}
           renderItem={({item}) => (
             <View>
               <TouchableOpacity  style={styles.row} onPress={() =>
@@ -81,13 +86,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   imgback: {
-    backgroundColor: 'white',
+    backgroundColor:colors.white,
     borderRadius: 35,
     height: 100,
     width: 100,
-    //    alignItems:'center',
-    //    justifyContent:'center',
-    borderColor: 'gray',
+    borderColor:colors.gray,
     borderWidth: 1,
     marginTop: 30,
   },
@@ -100,17 +103,17 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: 'green',
+    borderColor:colors.green,
     alignSelf: 'center',
   },
   title: {
-    color: 'black',
+    color:colors.black,
     fontSize: 22,
     fontWeight: '600',
     marginLeft: 15,
   },
   mail: {
-    color: 'black',
+    color:colors.black,
     fontSize: 14,
     fontWeight: '500',
     textAlign: 'center',
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
   },
   line: {
     borderWidth: 0.5,
-    borderBottomColor: 'gray',
+    borderBottomColor:colors.gray,
     marginVertical: 8,
     marginHorizontal: 10,
   },

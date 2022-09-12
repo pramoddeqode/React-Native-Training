@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import { Data } from '../mock/Mock';
+import { colors } from '../utils/Variables';
 const CategoryList = props => {
 const [search, setsearch] = useState('');
 
@@ -21,10 +22,11 @@ const [search, setsearch] = useState('');
        value={search}
       />
       </View>
-     
       <View style={styles.topspace}>
         <FlatList
-          data={Data}
+          data={Data.filter(value=>{
+           return  value.title.toLowerCase().includes(search.toLowerCase())
+          })}
           renderItem={({item}) => (
             <View>
               <View style={styles.row}>
@@ -57,13 +59,13 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   imgback: {
-    backgroundColor: 'white',
+    backgroundColor:colors.white,
     borderRadius: 35,
     height: 65,
     width: 65,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: 'gray',
+    borderColor: colors.gray,
     borderWidth: 1,
   },
   row: {
@@ -72,14 +74,14 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   title: {
-    color: 'black',
+    color: colors.black,
     fontSize: 22,
     fontWeight: '600',
     marginLeft: 15,
   },
   line: {
     borderWidth: 0.5,
-    borderBottomColor: 'gray',
+    borderBottomColor:colors.gray,
     marginVertical: 8,
     marginHorizontal:10
   },

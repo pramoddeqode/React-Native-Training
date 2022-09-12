@@ -1,4 +1,5 @@
 import {TextInput, StyleSheet} from 'react-native';
+import { colors } from '../utils/Variables';
 
 const CustomInput = props => {
   return (
@@ -7,13 +8,13 @@ const CustomInput = props => {
       onChangeText={props.onChangeText}
       value={props.value}
       placeholder="Search"
-      keyboardType="numeric"
+      keyboardType="default"
     />
   );
 };
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: 'white',
+    backgroundColor:colors.white,
     borderRadius: 10,
     height: 40,
     borderColor: 'gray',

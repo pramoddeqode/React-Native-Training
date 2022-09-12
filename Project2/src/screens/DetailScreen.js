@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet,Text, View ,Image,TouchableOpacity,TextInput} from 'react-native';
 import {useRoute} from '@react-navigation/native';
+import { colors } from '../utils/Variables';
 
 const DetailScreen = (props) => {
   const {params} = useRoute();
@@ -36,7 +37,7 @@ img: {
   alignSelf:'center'
 },
 title: {
-  color: 'black',
+  color:colors.black,
   fontSize: 22,
   fontWeight: '600',
   
