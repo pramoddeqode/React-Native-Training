@@ -1,36 +1,39 @@
 import {useRoute} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {debounce} from 'lodash';
+import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import CustomInput from '../components/CustomInput';
-import {Data1, Data2} from '../mock/Mock';
-import {colors} from '../utils/Variables';
-import axios from 'axios';
+import {colors, fontSizes} from '../utils/Variables';
 import Api from '../utils/Api';
 import ResultList from '../components/ResultList';
-const baseUrl = 'https://api.yelp.com/v3/businesses/search';
 
 const ProductList = props => {
-  const {params} = useRoute();
   const [search, setsearch] = useState('');
   const [user, setuser] = useState([]);
   const [error, seterror] = useState('');
-  const fetchData = async  () => {
+  const [page, setpage] = useState(15);
+
+ {/**  const debounce = func => {
+    let timer;
+    return function (...args) {
+      const context = this;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        func.apply(context, args);
+      }, 500);
+    };
+  };
+*/}
+  const fetchData = async value => {
     try {
-      const response = await Api.get('/search',{
-        params:{
-          limit:1,
-          location: 'san jose'
-        }
+      const response = await Api.get('/search', {
+        params: {
+          limit: 20,
+          location: 'san jose',
+        },
       });
-      console.log("gtyfghyjhghjg",response.data.businesses);
+      console.log('response is here..', response.data.businesses);
       const res = response.data.businesses;
       setuser(res);
     } catch (error) {
@@ -38,17 +41,49 @@ const ProductList = props => {
       seterror('Data fetching cancelled');
     }
   };
+  const handleChangeWithLib = debounce( async (value) => {
+    try {
+      const response = await Api.get('/search', {
+        params: {
+          limit: 20,
+          location: 'san jose',
+        },
+      });
+      console.log('response is here..', response.data.businesses);
+      const res = response.data.businesses;
+      setuser(res);
+    } catch (error) {
+      console.log('Data fetching cancelled');
+      seterror('Data fetching cancelled');
+    }
+  }, 500);
+  //const handler = useCallback(debounce(fetchData, 2000), []);
+   // const handler = useCallback(debounce(fetchData, 2000), []);
+   // const onChange = (event) => {
+   //  handler(event.target.value);
+ //  };
 
-  useEffect(() => fetchData(), []);
+  useEffect(() => {
+    fetchData();
+    console.log(page);
+  }, [page]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputbox}>
-        <CustomInput onChangeText={text => setsearch(text)} value={search} />
+        <CustomInput
+          onChangeText={text => setsearch(text)}
+          value={search}
+          onChange={(e) => handleChangeWithLib(e.target.value)}
+        />
       </View>
-      <ResultList title="Big spander" data={user}/>
-      {error?<Text>{error}</Text>:null} 
+      <ResultList
+        title="Big spander"
+        data={user}
+        page={page}
+        setpage={setpage}
+      />
+      {error ? <Text>{error}</Text> : null}
       
-    
     </SafeAreaView>
   );
 };
@@ -91,13 +126,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.black,
-    fontSize: 22,
+    fontSize: fontSizes.xxlarge,
     fontWeight: '600',
     marginLeft: 15,
   },
   mail: {
     color: colors.black,
-    fontSize: 14,
+    fontSize: fontSizes.medium,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 10,
