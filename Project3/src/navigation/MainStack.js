@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DetailScreen from '../screens/DetailScreen';
-import ProductList from '../screens/ProductList';
+import Category from '../screens/Category';
 
 
 const Stack = createNativeStackNavigator();
@@ -11,9 +11,9 @@ const MainStack = () => {
       <Stack.Navigator initialRouteName="ProductList">
         
          <Stack.Screen
-          name="ProductList"
-          component={ProductList}
-          options={{ title: 'Products' }}
+          name="Category"
+          component={Category}
+          options={{ title: 'Category' }}
         />
         <Stack.Screen
           name="DetailScreen"
@@ -21,7 +21,6 @@ const MainStack = () => {
           options={{ title: 'Details' }}
         />
         
-       
       </Stack.Navigator>
   );
 }; 
