@@ -1,62 +1,45 @@
 import {useRoute} from '@react-navigation/native';
-import React, {useState, useEffect, useCallback} from 'react';
-import {debounce} from 'lodash';
+import React, {useState} from 'react';
+import useResult from '../components/hooks/useResult';
 import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import CustomInput from '../components/CustomInput';
-import Api from '../utils/Api';
 import ResultList from '../components/ResultList';
+import { result } from 'lodash';
 
 const Category = props => {
-  const [search, setsearch] = useState('');
-  const [user, setuser] = useState([]);
-  const [error, seterror] = useState('');
-  const [page, setpage] = useState(1);
-
-  const fetchData = async value => {
-    try {
-      const response = await Api.get('/search', {
-        params: {
-          limit: 50,
-          location: 'san jose',
-          term: value,
-          
-        },
-      });
-      console.log('response is here..', response.data.businesses);
-      const res = response.data.businesses;
-      setuser(res);
-    } catch (error) {
-      console.log('Data fetching cancelled');
-      seterror('Data fetching cancelled');
-    }
+  const [term, setTerm] = useState('');
+  const [user,error,fetchData] = useResult();
+ 
+  filterResultByPrice = (price)=>{
+       return user.filter(result=>{
+        return result.price === price;
+       });
   };
-  const handler = useCallback(
-    debounce(text => fetchData(text), 500),
-    [],
-  );
-  useEffect(() => {
-    fetchData();
-    console.log(page);
-  }, [page]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputbox}>
         <CustomInput
-          onChangeText={text => {
-            setsearch(text);
-            handler(text);
-          }}
-          value={search}
+          term={term}
+          onTermChange={setTerm}
+          onTermSubmit={() => fetchData(term)}
+          
         />
       </View>
+     <Text>We have found {user.length} result </Text>
+      {error ? <Text>{error}</Text> : null}
       <ResultList
-        title="Big spander"
-        data={user}
-        page={page}
-        setpage={setpage}
+        title="Cost Effective"
+        user = {filterResultByPrice('$')}
       />
-      
-      {error ? <Text >{error}</Text> : null}
+       <ResultList
+        title="Bit Pricier"
+        user = {filterResultByPrice('$$')}
+      />
+       <ResultList
+        title="Big Spander"
+        user = {filterResultByPrice('$$$')}
+      />
     </SafeAreaView>
   );
 };
@@ -69,6 +52,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
   },
-  });
+});
 
 export default Category;

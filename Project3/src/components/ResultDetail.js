@@ -4,13 +4,13 @@ import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {colors, fontSizes} from '../utils/Variables';
 
-const ResultDetail = props => {
+const ResultDetail = ({result}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailScreen', {item: props.item})}>
-      <Image style={styles.img} source={{uri: props.item.image_url}} />
-      <Text style={styles.name}>{props.item.name}</Text>
+      onPress={() => navigation.navigate('DetailScreen', {item:result})}>
+      <Image style={styles.img} source={{uri:result.image_url}} />
+      <Text style={styles.name}>{result.name}</Text>
     </TouchableOpacity>
   );
 };

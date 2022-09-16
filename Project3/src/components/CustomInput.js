@@ -1,25 +1,30 @@
 import {TextInput, StyleSheet} from 'react-native';
-import { colors } from '../utils/Variables';
-
-const CustomInput = props => {
+import {colors} from '../utils/Variables';
+import {} from '../components/hooks/useResult'
+const CustomInput = ({term, onTermChange,onTermSubmit}) => {
   return (
     <TextInput
+      autoCorrect={false}
+      autoCapitalize="none"
       style={styles.input}
-      onChangeText={props.onChangeText}
-      value={props.value}
+      onChangeText={text => {
+        onTermChange(text)
+      }}
+      value={term}
       placeholder="Search"
       keyboardType="default"
+      onEndEditing={onTermSubmit}
     />
   );
 };
 const styles = StyleSheet.create({
   input: {
-    backgroundColor:colors.white,
+    backgroundColor: colors.white,
     borderRadius: 10,
     height: 40,
-    borderColor:colors.gray,
+    borderColor: colors.gray,
     borderWidth: 1,
-    paddingLeft:10
+    paddingLeft: 10,
   },
 });
 

@@ -1,30 +1,25 @@
+import {result} from 'lodash';
 import React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import {TouchableOpacity, Text, View, FlatList, StyleSheet} from 'react-native';
 
 import {colors, fontSizes} from '../utils/Variables';
 import ResultDetail from './ResultDetail';
 
-const ResultList = ({title, data, page,setpage}) => {
-  
+const ResultList = ({title, user}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{title}</Text>
+
       <FlatList
         horizontal
-        data={data}
-        onEndReachedThreshold={0.5}
-        onEndReached={()=>setpage(page+1)}
-        keyExtractor={item => item.id}
+        data={user}
+        //onEndReachedThreshold={0.5}
+        // onEndReached={()=>setpage(page+1)}
+        keyExtractor={result => result.id}
         renderItem={({item}) => {
           return (
             <TouchableOpacity>
-              <ResultDetail item={item} />
+              <ResultDetail result={item} />
             </TouchableOpacity>
           );
         }}
@@ -39,7 +34,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: colors.black,
-    fontSize:fontSizes.xxlarge,
+    fontSize: fontSizes.xxlarge,
     fontWeight: '600',
     marginTop: 10,
     marginLeft: 10,
